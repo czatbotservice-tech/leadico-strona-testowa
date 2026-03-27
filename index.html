@@ -1,1007 +1,1030 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leadico — Chatbot dla studiów detailingu</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
-    :root {
-      --bg:       #080808;
-      --surface:  #111111;
-      --surface2: #181818;
-      --border:   rgba(255,255,255,0.07);
-      --orange:   #FF6200;
-      --orange2:  #FF8C38;
-      --white:    #F0EDE8;
-      --muted:    #666;
-      --muted2:   #999;
-      --font-h:   'Bebas Neue', sans-serif;
-      --font-b:   'Syne', sans-serif;
-      --font-r:   'DM Sans', sans-serif;
-    }
- 
-    html { scroll-behavior: smooth; }
- 
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: var(--font-r);
-      font-weight: 300;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
- 
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.4;
-    }
- 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 60px;
-      background: rgba(8,8,8,0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      transition: padding 0.3s;
-    }
-    nav.scrolled { padding: 14px 60px; }
- 
-    .nav-logo {
-      font-family: var(--font-h);
-      font-size: 1.9rem;
-      letter-spacing: 0.05em;
-      color: var(--white);
-      text-decoration: none;
-    }
-    .nav-logo span { color: var(--orange); }
- 
-    .nav-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--orange);
-      color: #000;
-      font-family: var(--font-b);
-      font-weight: 700;
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 10px 22px;
-      border-radius: 3px;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .nav-cta:hover { background: var(--orange2); transform: translateY(-1px); }
- 
-    /* ── HERO ── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 140px 60px 80px;
-      position: relative;
-      overflow: hidden;
-    }
- 
-    /* diagonal grid lines */
-    #hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(135deg, rgba(255,98,0,0.03) 1px, transparent 1px),
-        linear-gradient(45deg, rgba(255,98,0,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-    }
- 
-    /* big orange glow */
-    .hero-glow {
-      position: absolute;
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,98,0,0.12) 0%, transparent 70%);
-      top: -100px; right: -150px;
-      pointer-events: none;
-    }
- 
-    .hero-tag {
-      display: inline-block;
-      font-family: var(--font-b);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--orange);
-      border: 1px solid rgba(255,98,0,0.4);
-      padding: 6px 14px;
-      border-radius: 2px;
-      margin-bottom: 28px;
-      width: fit-content;
-    }
- 
-    .hero-h1 {
-      font-family: var(--font-h);
-      font-size: clamp(3.5rem, 8vw, 8rem);
-      line-height: 0.95;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      max-width: 900px;
-      margin-bottom: 28px;
-    }
-    .hero-h1 .accent { color: var(--orange); }
-    .hero-h1 .thin {
-      font-family: var(--font-b);
-      font-size: clamp(1.2rem, 2.5vw, 2rem);
-      font-weight: 300;
-      display: block;
-      letter-spacing: 0.08em;
-      color: var(--muted2);
-      text-transform: none;
-      margin-bottom: 6px;
-    }
- 
-    .hero-desc {
-      font-size: 1.1rem;
-      color: var(--muted2);
-      max-width: 560px;
-      margin-bottom: 44px;
-      line-height: 1.8;
-    }
- 
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
- 
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--orange);
-      color: #000;
-      font-family: var(--font-b);
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 16px 32px;
-      border-radius: 3px;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-primary:hover {
-      background: var(--orange2);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(255,98,0,0.3);
-    }
- 
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--muted2);
-      font-family: var(--font-b);
-      font-weight: 600;
-      font-size: 0.88rem;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .btn-ghost:hover { color: var(--white); border-color: var(--white); }
- 
-    .hero-stat-row {
-      display: flex;
-      gap: 48px;
-      margin-top: 72px;
-      padding-top: 40px;
-      border-top: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
-    .hero-stat strong {
-      display: block;
-      font-family: var(--font-h);
-      font-size: 2.6rem;
-      color: var(--orange);
-      line-height: 1;
-    }
-    .hero-stat span {
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-family: var(--font-b);
-      font-weight: 600;
-    }
- 
-    /* ── SECTIONS COMMON ── */
-    section { padding: 110px 60px; }
-    section + section { border-top: 1px solid var(--border); }
- 
-    .section-tag {
-      font-family: var(--font-b);
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 20px;
-    }
- 
-    .section-h2 {
-      font-family: var(--font-h);
-      font-size: clamp(2.4rem, 5vw, 4.2rem);
-      line-height: 1;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      max-width: 700px;
-    }
- 
-    .section-lead {
-      font-size: 1.05rem;
-      color: var(--muted2);
-      max-width: 560px;
-      line-height: 1.85;
-    }
- 
-    /* ── PROBLEM ── */
-    #problem { background: var(--surface); }
- 
-    .problem-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: start;
-      margin-top: 64px;
-    }
- 
-    .problem-cards { display: flex; flex-direction: column; gap: 16px; }
- 
-    .pcard {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-left: 3px solid rgba(255,98,0,0.5);
-      padding: 24px 28px;
-      border-radius: 4px;
-      position: relative;
-      overflow: hidden;
-      transition: border-color 0.3s, transform 0.3s;
-    }
-    .pcard:hover { border-left-color: var(--orange); transform: translateX(4px); }
-    .pcard-icon { font-size: 1.5rem; margin-bottom: 10px; }
-    .pcard h4 {
-      font-family: var(--font-b);
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      letter-spacing: 0.02em;
-    }
-    .pcard p { font-size: 0.88rem; color: var(--muted2); line-height: 1.7; }
- 
-    /* messenger mockup */
-    .messenger-mock {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      position: relative;
-    }
-    .mock-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 20px;
-    }
-    .mock-avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #333, #222);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
-    }
-    .mock-name { font-family: var(--font-b); font-size: 0.9rem; font-weight: 700; }
-    .mock-status { font-size: 0.72rem; color: #ef4444; display: flex; align-items: center; gap: 4px; }
-    .mock-status::before { content: '●'; }
- 
-    .mock-bubble {
-      max-width: 80%;
-      padding: 10px 14px;
-      border-radius: 18px;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      margin-bottom: 8px;
-    }
-    .mock-bubble.incoming {
-      background: #1e3a5f;
-      border-bottom-left-radius: 4px;
-      margin-right: auto;
-    }
-    .mock-bubble.outgoing {
-      background: var(--surface2);
-      border-bottom-right-radius: 4px;
-      margin-left: auto;
-      color: var(--muted2);
-    }
-    .mock-time {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-align: center;
-      margin: 8px 0;
-    }
-    .mock-seen {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-align: right;
-      margin-top: 4px;
-    }
-    .mock-badge {
-      display: inline-block;
-      background: rgba(239,68,68,0.15);
-      border: 1px solid rgba(239,68,68,0.3);
-      color: #ef4444;
-      font-size: 0.72rem;
-      font-family: var(--font-b);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 2px;
-      margin-top: 16px;
-      width: 100%;
-      text-align: center;
-    }
- 
-    /* ── SOLUTION ── */
-    #solution { position: relative; overflow: hidden; }
-    #solution::after {
-      content: '';
-      position: absolute;
-      width: 600px; height: 600px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,98,0,0.07) 0%, transparent 70%);
-      bottom: -200px; right: -100px;
-      pointer-events: none;
-    }
- 
-    .solution-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      margin-top: 64px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
- 
-    .scard {
-      background: var(--surface);
-      padding: 40px 32px;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.3s;
-    }
-    .scard:hover { background: var(--surface2); }
-    .scard::before {
-      content: attr(data-num);
-      position: absolute;
-      top: -10px; right: 16px;
-      font-family: var(--font-h);
-      font-size: 6rem;
-      color: rgba(255,98,0,0.06);
-      line-height: 1;
-      pointer-events: none;
-    }
- 
-    .scard-icon {
-      width: 48px; height: 48px;
-      border-radius: 8px;
-      background: rgba(255,98,0,0.1);
-      border: 1px solid rgba(255,98,0,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 20px;
-    }
-    .scard h3 {
-      font-family: var(--font-b);
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      letter-spacing: 0.01em;
-    }
-    .scard p { font-size: 0.88rem; color: var(--muted2); line-height: 1.75; }
- 
-    /* ── HOW IT WORKS ── */
-    #how { background: var(--surface); }
- 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      margin-top: 64px;
-      position: relative;
-    }
-    .steps::before {
-      content: '';
-      position: absolute;
-      top: 36px; left: calc(33.33% / 2);
-      width: calc(100% - 33.33%);
-      height: 1px;
-      background: linear-gradient(90deg, var(--orange), rgba(255,98,0,0.2));
-      z-index: 0;
-    }
- 
-    .step {
-      text-align: center;
-      padding: 0 32px;
-      position: relative;
-      z-index: 1;
-    }
- 
-    .step-num {
-      width: 72px; height: 72px;
-      border-radius: 50%;
-      background: var(--bg);
-      border: 2px solid var(--orange);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-h);
-      font-size: 1.8rem;
-      color: var(--orange);
-      margin: 0 auto 28px;
-      position: relative;
-    }
-    .step-num::after {
-      content: '';
-      position: absolute;
-      inset: -6px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,98,0,0.2);
-    }
- 
-    .step-emoji { font-size: 1.8rem; display: block; margin-bottom: 12px; }
- 
-    .step h3 {
-      font-family: var(--font-b);
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      letter-spacing: 0.02em;
-    }
-    .step p { font-size: 0.88rem; color: var(--muted2); line-height: 1.75; }
- 
-    /* ── PRICING ── */
-    #pricing { text-align: center; position: relative; overflow: hidden; }
-    #pricing::before {
-      content: 'LEADICO';
-      position: absolute;
-      font-family: var(--font-h);
-      font-size: 18vw;
-      color: rgba(255,255,255,0.015);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      white-space: nowrap;
-    }
- 
-    .price-card {
-      display: inline-block;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 60px 72px;
-      position: relative;
-      margin-top: 56px;
-      overflow: hidden;
-      max-width: 520px;
-      width: 100%;
-    }
-    .price-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--orange), var(--orange2));
-    }
- 
-    .price-badge {
-      display: inline-block;
-      background: rgba(255,98,0,0.15);
-      border: 1px solid rgba(255,98,0,0.3);
-      color: var(--orange2);
-      font-family: var(--font-b);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 5px 14px;
-      border-radius: 2px;
-      margin-bottom: 28px;
-    }
- 
-    .price-amount {
-      font-family: var(--font-h);
-      font-size: 5rem;
-      line-height: 1;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-    .price-amount sub {
-      font-size: 1.8rem;
-      vertical-align: bottom;
-      color: var(--muted2);
-    }
-    .price-amount sup {
-      font-size: 2rem;
-      color: var(--muted2);
-    }
- 
-    .price-period {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 36px;
-      font-family: var(--font-b);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
- 
-    .price-features { list-style: none; margin-bottom: 40px; text-align: left; }
-    .price-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.92rem;
-      color: var(--muted2);
-    }
-    .price-features li:last-child { border-bottom: none; }
-    .price-features li::before {
-      content: '✓';
-      color: var(--orange);
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
- 
-    .price-trial {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-top: 20px;
-      font-family: var(--font-b);
-      letter-spacing: 0.04em;
-    }
-    .price-trial strong { color: var(--orange2); }
- 
-    /* ── CTA SECTION ── */
-    #contact {
-      background: var(--surface);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    #contact::before {
-      content: '';
-      position: absolute;
-      width: 800px; height: 800px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,98,0,0.08) 0%, transparent 65%);
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      pointer-events: none;
-    }
- 
-    .contact-h2 {
-      font-family: var(--font-h);
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      line-height: 0.95;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-    .contact-h2 .accent { color: var(--orange); }
- 
-    .contact-sub {
-      font-size: 1.05rem;
-      color: var(--muted2);
-      margin-bottom: 48px;
-      max-width: 480px;
-      margin-left: auto; margin-right: auto;
-    }
- 
-    .contact-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 48px;
-    }
- 
-    .btn-messenger {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #0084ff;
-      color: #fff;
-      font-family: var(--font-b);
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 16px 32px;
-      border-radius: 3px;
-      text-decoration: none;
-      transition: opacity 0.2s, transform 0.2s;
-    }
-    .btn-messenger:hover { opacity: 0.85; transform: translateY(-2px); }
- 
-    .btn-email {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: transparent;
-      color: var(--white);
-      border: 1px solid var(--border);
-      font-family: var(--font-b);
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 16px 32px;
-      border-radius: 3px;
-      text-decoration: none;
-      transition: border-color 0.2s, color 0.2s, transform 0.2s;
-    }
-    .btn-email:hover { border-color: var(--white); transform: translateY(-2px); }
- 
-    .contact-email-display {
-      font-family: var(--font-b);
-      font-size: 0.82rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-    }
-    .contact-email-display a { color: var(--muted2); text-decoration: none; }
-    .contact-email-display a:hover { color: var(--white); }
- 
-    /* ── FOOTER ── */
-    footer {
-      padding: 32px 60px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-logo {
-      font-family: var(--font-h);
-      font-size: 1.4rem;
-      letter-spacing: 0.05em;
-      color: var(--white);
-      text-decoration: none;
-    }
-    .footer-logo span { color: var(--orange); }
-    footer p {
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
- 
-    /* ── ANIMATIONS ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
- 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 960px) {
-      nav { padding: 18px 28px; }
-      #hero { padding: 120px 28px 60px; }
-      section { padding: 72px 28px; }
-      footer { padding: 28px; }
- 
-      .problem-grid { grid-template-columns: 1fr; }
-      .solution-grid { grid-template-columns: 1fr; }
-      .steps { grid-template-columns: 1fr; }
-      .steps::before { display: none; }
-      .step { padding: 24px 0; border-bottom: 1px solid var(--border); }
-      .step:last-child { border-bottom: none; }
-      .price-card { padding: 40px 28px; }
-      .hero-stat-row { gap: 28px; }
-    }
- 
-    @media (max-width: 600px) {
-      .hero-h1 { font-size: 3rem; }
-      .price-amount { font-size: 3.8rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadico — Chatbot Messenger dla Detailingu</title>
+<meta name="description" content="Automatyczny chatbot na Messengera dla studiów auto detailingu. Odpowiada klientom 24/7, prowadzi rozmowę i powiadamia Cię SMS-em. 250 zł/mies.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════ RESET & VARIABLES ═══════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #080808;
+  --bg-card: #0f0f0f;
+  --bg-card-hover: #141414;
+  --orange: #FF6200;
+  --orange-glow: rgba(255, 98, 0, 0.35);
+  --orange-soft: rgba(255, 98, 0, 0.08);
+  --white: #f5f5f5;
+  --gray: #8a8a8a;
+  --gray-light: #b5b5b5;
+  --border: rgba(255, 255, 255, 0.06);
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-heading: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════ NOISE OVERLAY ═══════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px;
+}
+
+/* ═══════════════════════ UTILITY ═══════════════════════ */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ═══════════════════════ NAV ═══════════════════════ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 20px 0;
+  transition: background 0.4s, backdrop-filter 0.4s, padding 0.4s;
+}
+
+nav.scrolled {
+  background: rgba(8, 8, 8, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  letter-spacing: 3px;
+  color: var(--white);
+}
+
+.logo span { color: var(--orange); }
+
+nav .cta-nav {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 10px 24px;
+  background: var(--orange);
+  color: var(--bg);
+  border-radius: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+nav .cta-nav:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 30px var(--orange-glow);
+}
+
+/* ═══════════════════════ HERO ═══════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 120px 0 80px;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+  filter: blur(100px);
+  pointer-events: none;
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 720px; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 28px;
+  padding: 8px 16px;
+  background: var(--orange-soft);
+  border: 1px solid rgba(255, 98, 0, 0.15);
+  border-radius: 100px;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+
+.hero h1 .accent { color: var(--orange); }
+
+.hero p {
+  font-size: 1.15rem;
+  color: var(--gray-light);
+  max-width: 520px;
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 16px 36px;
+  background: var(--orange);
+  color: var(--bg);
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px var(--orange-glow);
+}
+
+.hero-cta svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s;
+}
+
+.hero-cta:hover svg { transform: translateX(3px); }
+
+/* ═══════════════════════ SECTION COMMON ═══════════════════════ */
+section { padding: 100px 0; }
+
+.section-label {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.section-desc {
+  color: var(--gray-light);
+  font-size: 1.05rem;
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ═══════════════════════ PROBLEM ═══════════════════════ */
+.problem { border-top: 1px solid var(--border); }
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-top: 60px;
+}
+
+.problem-cards { display: flex; flex-direction: column; gap: 16px; }
+
+.problem-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.problem-card:hover {
+  border-color: rgba(255, 98, 0, 0.2);
+  background: var(--bg-card-hover);
+}
+
+.problem-card .icon {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.problem-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.problem-card p {
+  font-size: 0.9rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* stat highlight */
+.stat-highlight {
+  background: linear-gradient(135deg, rgba(255,98,0,0.08), rgba(255,98,0,0.02));
+  border: 1px solid rgba(255,98,0,0.15);
+  border-radius: 16px;
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 8vw, 6rem);
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray-light);
+}
+
+.stat-sub {
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════ SOLUTION ═══════════════════════ */
+.solution {
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+.solution::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,98,0,0.1) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.solution-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-top: 60px;
+}
+
+.solution-features { display: flex; flex-direction: column; gap: 28px; }
+
+.feature {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: var(--orange-soft);
+  border: 1px solid rgba(255,98,0,0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.feature h3 {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.feature p {
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* chat mockup */
+.chat-mockup {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.chat-avatar {
+  width: 36px;
+  height: 36px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--bg);
+}
+
+.chat-name {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.chat-status {
+  font-size: 0.7rem;
+  color: #22c55e;
+}
+
+.chat-messages { display: flex; flex-direction: column; gap: 12px; }
+
+.msg {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  animation: fadeInMsg 0.5s ease-out both;
+}
+
+.msg-bot {
+  background: #1a1a1a;
+  border: 1px solid var(--border);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.msg-user {
+  background: var(--orange);
+  color: var(--bg);
+  font-weight: 500;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.msg:nth-child(1) { animation-delay: 0.1s; }
+.msg:nth-child(2) { animation-delay: 0.4s; }
+.msg:nth-child(3) { animation-delay: 0.7s; }
+.msg:nth-child(4) { animation-delay: 1.0s; }
+.msg:nth-child(5) { animation-delay: 1.3s; }
+.msg:nth-child(6) { animation-delay: 1.6s; }
+
+@keyframes fadeInMsg {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════ HOW IT WORKS ═══════════════════════ */
+.steps { border-top: 1px solid var(--border); text-align: center; }
+
+.steps .section-desc { margin: 0 auto 60px; }
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 32px;
+  text-align: center;
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.step-card:hover {
+  border-color: rgba(255,98,0,0.25);
+  transform: translateY(-4px);
+}
+
+.step-num {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  color: var(--orange);
+  line-height: 1;
+  opacity: 0.3;
+  margin-bottom: 16px;
+}
+
+.step-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.step-card p {
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+.step-emoji {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  display: block;
+}
+
+/* connector lines */
+.steps-grid { position: relative; }
+
+/* ═══════════════════════ PRICING ═══════════════════════ */
+.pricing {
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.pricing .section-desc { margin: 0 auto 60px; }
+
+.price-card {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,98,0,0.2);
+  border-radius: 20px;
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.price-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+}
+
+.price-amount {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 6vw, 4.5rem);
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.price-period {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--gray);
+  margin-bottom: 28px;
+}
+
+.price-trial {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--orange);
+  background: var(--orange-soft);
+  border: 1px solid rgba(255,98,0,0.15);
+  padding: 8px 20px;
+  border-radius: 100px;
+  margin-bottom: 32px;
+}
+
+.price-features {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 36px;
+}
+
+.price-features li {
+  padding: 10px 0;
+  font-size: 0.92rem;
+  color: var(--gray-light);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.price-features li:last-child { border-bottom: none; }
+
+.price-features .check {
+  color: var(--orange);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.price-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 16px 40px;
+  background: var(--orange);
+  color: var(--bg);
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.3s;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+}
+
+.price-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px var(--orange-glow);
+}
+
+/* ═══════════════════════ CTA FINAL ═══════════════════════ */
+.final-cta {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 120px 0;
+  position: relative;
+}
+
+.final-cta::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(255,98,0,0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.final-cta .section-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.final-cta .section-desc {
+  margin: 0 auto 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 16px 36px;
+  background: var(--orange);
+  color: var(--bg);
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px var(--orange-glow);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 16px 36px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--white);
+  border-radius: 8px;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(255,98,0,0.4);
+  background: var(--orange-soft);
+}
+
+/* ═══════════════════════ FOOTER ═══════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+  text-align: center;
+}
+
+footer p {
+  font-size: 0.8rem;
+  color: var(--gray);
+}
+
+footer a { color: var(--orange); }
+
+/* ═══════════════════════ SCROLL REVEAL ═══════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ═══════════════════════ RESPONSIVE ═══════════════════════ */
+@media (max-width: 768px) {
+  section { padding: 72px 0; }
+
+  .problem-grid,
+  .solution-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .stat-highlight { order: -1; }
+
+  .price-card { padding: 36px 24px; }
+
+  .cta-buttons { flex-direction: column; align-items: center; }
+
+  .hero h1 { letter-spacing: 1px; }
+}
+</style>
 </head>
 <body>
- 
-  <!-- NAV -->
-  <nav id="main-nav">
-    <a href="#" class="nav-logo">LEADI<span>CO</span></a>
-    <a href="#contact" class="nav-cta">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.18 21.5l4.438-1.219A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
-      Napisz do nas
-    </a>
-  </nav>
- 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-glow"></div>
-    <div class="hero-tag reveal">🚗 Chatbot dla auto detailingu</div>
-    <h1 class="hero-h1 reveal reveal-delay-1">
-      <span class="thin">Nie trać leadów</span>
-      Gdy śpisz,<br /><span class="accent">Bot pracuje.</span>
-    </h1>
-    <p class="hero-desc reveal reveal-delay-2">
-      Leadico automatycznie obsługuje klientów na Messengerze 24/7 — 
-      odpowiada na pytania, prowadzi rozmowę 
-      i wysyła Ci SMS, gdy ktoś jest zainteresowany Twoją usługą.
-    </p>
-    <div class="hero-actions reveal reveal-delay-3">
-      <a href="#contact" class="btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.18 21.5l4.438-1.219A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
-        Zacznij za darmo
-      </a>
-      <a href="#how" class="btn-ghost">
-        Jak to działa
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+
+<!-- ═══════════════════════ NAV ═══════════════════════ -->
+<nav id="nav">
+  <div class="container">
+    <a href="#" class="logo">LEADICO<span>.</span></a>
+    <a href="#kontakt" class="cta-nav">Napisz do nas</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">Dla studiów auto detailingu</div>
+      <h1>
+        TWÓJ MESSENGER<br>
+        ODPOWIADA<br>
+        <span class="accent">24/7</span>
+      </h1>
+      <p>
+        Chatbot, który prowadzi rozmowę z klientami na Messengerze — nawet o 2 w nocy.
+        Gdy klient jest zainteresowany, dostajesz SMS z&nbsp;jego danymi.
+      </p>
+      <a href="#kontakt" class="hero-cta">
+        Napisz do nas
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
       </a>
     </div>
-    <div class="hero-stat-row reveal reveal-delay-4">
-      <div class="hero-stat">
-        <strong>24/7</strong>
-        <span>Dostępność bota</span>
-      </div>
-      <div class="hero-stat">
-        <strong>~2 min</strong>
-        <span>Czas odpowiedzi</span>
-      </div>
-      <div class="hero-stat">
-        <strong>250 zł</strong>
-        <span>Miesięcznie</span>
-      </div>
-      <div class="hero-stat">
-        <strong>0 zł</strong>
-        <span>Pierwsze 2 tygodnie</span>
-      </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PROBLEM ═══════════════════════ -->
+<section class="problem">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Problem</p>
+      <h2 class="section-title">KLIENCI PISZĄ.<br>NIKT NIE ODPOWIADA.</h2>
+      <p class="section-desc">
+        Większość zapytań na Messengerze wpada po godzinach pracy.
+        Gdy odpisujesz rano — klient już umówił się gdzie indziej.
+      </p>
     </div>
-  </section>
- 
-  <!-- PROBLEM -->
-  <section id="problem">
-    <p class="section-tag reveal">Problem</p>
-    <h2 class="section-h2 reveal reveal-delay-1">Leady giną po godzinach pracy</h2>
-    <p class="section-lead reveal reveal-delay-2">
-      Klienci pytają o wolne terminy o 22:00. 
-      Ty śpisz. Rano widzisz wiadomość — 
-      ale tamten już umówił się u konkurencji.
-    </p>
- 
+
     <div class="problem-grid">
-      <div class="problem-cards reveal reveal-delay-1">
-        <div class="pcard">
-          <div class="pcard-icon">🌙</div>
-          <h4>Zapytania po godzinach</h4>
-          <p>Większość klientów pisze wieczorami i w weekendy — dokładnie wtedy, kiedy studio jest zamknięte.</p>
+      <div class="problem-cards">
+        <div class="problem-card reveal">
+          <div class="icon">🕐</div>
+          <h3>Wieczory i weekendy</h3>
+          <p>Klienci szukają detailingu po pracy. Piszą o 20:00, 22:00, w niedzielę. Ty już nie siedzisz przy telefonie.</p>
         </div>
-        <div class="pcard">
-          <div class="pcard-icon">⚡</div>
-          <h4>Klient nie czeka</h4>
-          <p>Jeśli nie dostanie odpowiedzi w ciągu kilku minut, pisze do kolejnego studia. I tam zostaje.</p>
+        <div class="problem-card reveal reveal-delay-1">
+          <div class="icon">💬</div>
+          <h3>Brak odpowiedzi = brak klienta</h3>
+          <p>Wiadomość bez odpowiedzi przez kilka godzin? Klient pisze do konkurencji. Tak to działa.</p>
         </div>
-        <div class="pcard">
-          <div class="pcard-icon">📋</div>
-          <h4>Brak danych klienta</h4>
-          <p>Nawet jeśli odpisujesz, musisz ręcznie zbierać markę auta, zakres usługi, termin. To pochłania czas.</p>
-        </div>
-        <div class="pcard">
-          <div class="pcard-icon">😮‍💨</div>
-          <h4>Ciągłe przerywanie</h4>
-          <p>Każde pytanie na Messengerze to przerwa w pracy. Detalerzy sami obsługują klientów — to się nie skaluje.</p>
+        <div class="problem-card reveal reveal-delay-2">
+          <div class="icon">😩</div>
+          <h3>Sam nie ogarniesz wszystkiego</h3>
+          <p>Polerowanie, klient na miejscu, telefony, Messenger — nie da się robić wszystkiego naraz.</p>
         </div>
       </div>
- 
-      <div class="messenger-mock reveal reveal-delay-2">
-        <div class="mock-header">
-          <div class="mock-avatar">🚗</div>
+
+      <div class="stat-highlight reveal">
+        <div class="stat-number">73%</div>
+        <p class="stat-label">zapytań wpada po godzinach</p>
+        <p class="stat-sub">Na podstawie analizy studiów detailingowych<br>w&nbsp;woj.&nbsp;śląskim</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SOLUTION ═══════════════════════ -->
+<section class="solution">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Rozwiązanie</p>
+      <h2 class="section-title">BOT ROZMAWIA.<br>TY DOSTAJESZ SMS.</h2>
+      <p class="section-desc">
+        Leadico to chatbot, który prowadzi naturalną rozmowę z&nbsp;klientami na Messengerze.
+        Pyta o szczegóły, odpowiada na pytania — a&nbsp;gdy klient jest zainteresowany,
+        wysyła Ci SMS z&nbsp;gotowymi informacjami.
+      </p>
+    </div>
+
+    <div class="solution-content">
+      <div class="solution-features">
+        <div class="feature reveal">
+          <div class="feature-icon">⚡</div>
           <div>
-            <div class="mock-name">Studio Detailing Pro</div>
-            <div class="mock-status">Brak odpowiedzi</div>
+            <h3>Odpowiada w sekundy</h3>
+            <p>Klient pisze o 23:00? Bot odpowiada natychmiast. Żadnego czekania, żadnych straconych zapytań.</p>
           </div>
         </div>
-        <div class="mock-time">Wczoraj, 21:47</div>
-        <div class="mock-bubble incoming">Hej, macie może termin na korektę lakieru BMW F30? Chciałbym umówić się na przyszły tydzień 🙏</div>
-        <div class="mock-bubble incoming">Interesuje mnie pakiet średni, auto jest w miarę dobrym stanie</div>
-        <div class="mock-time">Dziś, 09:12</div>
-        <div class="mock-bubble outgoing">Hej! Przepraszam za opóźnienie...</div>
-        <div class="mock-seen">✓✓ Dostarczono · Nie przeczytano</div>
-        <div class="mock-badge">❌ Klient już wybrał konkurencję</div>
+        <div class="feature reveal reveal-delay-1">
+          <div class="feature-icon">💬</div>
+          <div>
+            <h3>Naturalna rozmowa</h3>
+            <p>Żaden sztywny formularz. Bot prowadzi ludzką rozmowę — pyta o imię, auto, czego klient potrzebuje.</p>
+          </div>
+        </div>
+        <div class="feature reveal reveal-delay-2">
+          <div class="feature-icon">📱</div>
+          <div>
+            <h3>SMS do Ciebie</h3>
+            <p>Gdy klient jest zainteresowany, dostajesz SMS: imię, telefon, marka auta, zakres usługi. Od razu wiesz kto i co.</p>
+          </div>
+        </div>
+        <div class="feature reveal reveal-delay-3">
+          <div class="feature-icon">🔧</div>
+          <div>
+            <h3>Konfiguracja pod Twoje studio</h3>
+            <p>Bot zna Twoje usługi, cennik, godziny pracy. Odpowiada tak, jakbyś odpowiadał Ty sam.</p>
+          </div>
+        </div>
+        <div class="feature reveal reveal-delay-3">
+          <div class="feature-icon">💎</div>
+          <div>
+            <h3>Dopasowuje usługi do klienta</h3>
+            <p>Klient pyta o mycie? Bot zaproponuje też zabezpieczenie ceramiczne. Zna Twój cennik i wie, co warto podpowiedzieć.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-mockup reveal">
+        <div class="chat-header">
+          <div class="chat-avatar">L</div>
+          <div>
+            <div class="chat-name">Studio Detailing Pro</div>
+            <div class="chat-status">● Online</div>
+          </div>
+        </div>
+        <div class="chat-messages">
+          <div class="msg msg-user">Cześć, ile kosztuje korekta lakieru na BMW F30?</div>
+          <div class="msg msg-bot">Hej! Chętnie pomogę 😊 Korekta jednofazowa to 800 zł, a wieloetapowa od 1200 zł. Zależy od stanu lakieru. Jak ma na imię osoba, z którą rozmawiam?</div>
+          <div class="msg msg-user">Marcin</div>
+          <div class="msg msg-bot">Cześć Marcin! A jaki numer telefonu podać, żeby właściciel studia mógł się z Tobą skontaktować?</div>
+          <div class="msg msg-user">512 345 678</div>
+          <div class="msg msg-bot">Gotowe! Przekazałem informacje — odezwą się do Ciebie najszybciej jak to możliwe. Dzięki Marcin 🤙</div>
+        </div>
       </div>
     </div>
-  </section>
- 
-  <!-- SOLUTION -->
-  <section id="solution">
-    <p class="section-tag reveal">Rozwiązanie</p>
-    <h2 class="section-h2 reveal reveal-delay-1">Bot odpowiada.<br />Ty dostajesz SMS.</h2>
-    <p class="section-lead reveal reveal-delay-2">
-      Leadico przejmuje Twojego Messengera. 
-      Klient dostaje natychmiastową odpowiedź — 
-      a Ty dostajesz gotowy lead na telefon.
-    </p>
- 
-    <div class="solution-grid">
-      <div class="scard reveal reveal-delay-1" data-num="01">
-        <div class="scard-icon">🤖</div>
-        <h3>Odpowiedź w sekundy</h3>
-        <p>Bot wita klienta, odpowiada na pytania o cennik i dostępność — niezależnie od pory dnia i nocy.</p>
-      </div>
-      <div class="scard reveal reveal-delay-2" data-num="02">
-        <div class="scard-icon">📊</div>
-        <h3>Prowadzi naturalną rozmowę</h3>
-        <p>Pyta o imię, numer kontaktowy, markę auta i zakres usługi — klient po prostu odpisuje, jak w zwykłej rozmowie. Wszystko trafia do Google Sheets.</p>
-      </div>
-      <div class="scard reveal reveal-delay-3" data-num="03">
-        <div class="scard-icon">📱</div>
-        <h3>SMS do Ciebie</h3>
-        <p>Gdy klient jest gotowy na rezerwację, dostajesz SMS z jego danymi. Dzwonisz i zamykasz temat.</p>
-      </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ HOW IT WORKS ═══════════════════════ -->
+<section class="steps">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Jak to działa</p>
+      <h2 class="section-title">3 PROSTE KROKI</h2>
+      <p class="section-desc">
+        Bez technicznej wiedzy. Podłączamy bota do Twojego Messengera — Ty zajmujesz się detailingiem.
+      </p>
     </div>
-  </section>
- 
-  <!-- HOW IT WORKS -->
-  <section id="how">
-    <p class="section-tag reveal">Jak to działa</p>
-    <h2 class="section-h2 reveal reveal-delay-1">Trzy proste kroki</h2>
-    <p class="section-lead reveal reveal-delay-2">
-      Zero technicznych ustawień z Twojej strony. 
-      Konfigurujemy wszystko i przekazujemy gotowy bot.
-    </p>
- 
-    <div class="steps">
-      <div class="step reveal reveal-delay-1">
-        <div class="step-num">1</div>
+
+    <div class="steps-grid">
+      <div class="step-card reveal">
         <span class="step-emoji">💬</span>
+        <div class="step-num">01</div>
         <h3>Klient pisze na Messengerze</h3>
-        <p>Klient trafia na Twój fanpage i zaczyna rozmowę. Bot odbiera wiadomość natychmiast — o każdej porze.</p>
+        <p>Pyta o dostępność, cenę, zakres usługi — o dowolnej porze dnia i nocy.</p>
       </div>
-      <div class="step reveal reveal-delay-2">
-        <div class="step-num">2</div>
-        <span class="step-emoji">🧩</span>
-        <h3>Bot zbiera dane</h3>
-        <p>Rozmawia z klientem naturalnie — pyta o imię, markę auta, zakres usługi i preferowany termin. Klient po prostu odpisuje.</p>
+      <div class="step-card reveal reveal-delay-1">
+        <span class="step-emoji">🤖</span>
+        <div class="step-num">02</div>
+        <h3>Bot prowadzi rozmowę</h3>
+        <p>Odpowiada naturalnie, pyta o szczegóły, podaje informacje o Twoich usługach.</p>
       </div>
-      <div class="step reveal reveal-delay-3">
-        <div class="step-num">3</div>
-        <span class="step-emoji">🔔</span>
-        <h3>Ty dostajesz SMS</h3>
-        <p>Gdy klient jest zainteresowany, dostajesz SMSa z jego danymi. Oddzwaniasz kiedy Ci pasuje — i rozmawiasz już z kimś konkretnym.</p>
+      <div class="step-card reveal reveal-delay-2">
+        <span class="step-emoji">📲</span>
+        <div class="step-num">03</div>
+        <h3>Dostajesz SMS</h3>
+        <p>Imię, telefon, auto, czego potrzebuje — wszystko gotowe. Wystarczy oddzwonić.</p>
       </div>
     </div>
-  </section>
- 
-  <!-- PRICING -->
-  <section id="pricing">
-    <p class="section-tag reveal">Cennik</p>
-    <h2 class="section-h2 reveal reveal-delay-1" style="margin: 0 auto 8px;">Jeden plan.<br />Bez niespodzianek.</h2>
-    <p class="section-lead reveal reveal-delay-2" style="margin: 0 auto;">
-      Żadnych ukrytych opłat, żadnych limitów leadów.
-    </p>
- 
-    <div class="price-card reveal reveal-delay-2">
-      <div class="price-badge">⭐ Pełna obsługa</div>
-      <div class="price-amount">
-        <sup>od</sup> 250 <sub>zł</sub>
-      </div>
-      <p class="price-period">/ miesiąc · pełna obsługa</p>
- 
+  </div>
+</section>
+
+<!-- ═══════════════════════ PRICING ═══════════════════════ -->
+<section class="pricing">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Cennik</p>
+      <h2 class="section-title">PROSTA CENA.<br>BEZ HACZYKÓW.</h2>
+      <p class="section-desc">
+        Jeden plan. Wszystko w pakiecie. Bez ukrytych kosztów.
+      </p>
+    </div>
+
+    <div class="price-card reveal">
+      <div class="price-amount">250 ZŁ</div>
+      <div class="price-period">miesięcznie · netto</div>
+      <div class="price-trial">Pierwsze 2 tygodnie bezpłatnie</div>
+
       <ul class="price-features">
-        <li>Bot na Messengerze Twojego studia</li>
-        <li>Zbieranie danych klienta automatycznie</li>
-        <li>SMS do właściciela przy każdym zgłoszeniu</li>
-        <li>Zapis leadów w Google Sheets</li>
-        <li>Konfiguracja pod Twoje usługi i cennik</li>
-        <li>Wsparcie techniczne i aktualizacje</li>
+        <li><span class="check">✓</span> Chatbot na Messengerze 24/7</li>
+        <li><span class="check">✓</span> Powiadomienia SMS w czasie rzeczywistym</li>
+        <li><span class="check">✓</span> Konfiguracja pod Twoje usługi i cennik</li>
+        <li><span class="check">✓</span> Historia rozmów w Google Sheets</li>
+        <li><span class="check">✓</span> Wsparcie techniczne i aktualizacje</li>
       </ul>
- 
-      <a href="#contact" class="btn-primary" style="width:100%; justify-content:center;">
-        Zacznij bezpłatne 2 tygodnie
-      </a>
-      <p class="price-trial">Pierwsze <strong>2 tygodnie bezpłatnie</strong> — bez karty, bez zobowiązań.</p>
+
+      <a href="#kontakt" class="price-cta">Zacznij za darmo</a>
     </div>
-  </section>
- 
-  <!-- CTA / CONTACT -->
-  <section id="contact">
-    <h2 class="contact-h2 reveal">
-      Gotowy żeby przestać<br />
-      <span class="accent">tracić klientów?</span>
-    </h2>
-    <p class="contact-sub reveal reveal-delay-1">
-      Napisz do nas — porozmawiamy o Twoim studio i uruchomimy bota w ciągu kilku dni.
-    </p>
-    <div class="contact-buttons reveal reveal-delay-2">
-      <a href="https://m.me/leadico" class="btn-messenger">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.18 21.5l4.438-1.219A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FINAL CTA ═══════════════════════ -->
+<section class="final-cta" id="kontakt">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Kontakt</p>
+      <h2 class="section-title">GOTOWY, ŻEBY NIE TRACIĆ<br>KLIENTÓW?</h2>
+      <p class="section-desc">
+        Napisz do nas — ustawimy bota na Twojego Messengera.
+        Pierwsze 2 tygodnie za darmo, bez zobowiązań.
+      </p>
+    </div>
+
+    <div class="cta-buttons reveal">
+      <a href="https://m.me/TWOJA_STRONA" target="_blank" class="btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.36 2 2 6.13 2 11.7c0 2.91 1.2 5.42 3.15 7.2V22l3.04-1.67c.85.24 1.75.37 2.81.37 5.64 0 10-4.13 10-9.7S17.64 2 12 2zm1.12 12.58l-2.55-2.72L5.6 14.7l5.42-5.75 2.61 2.72 4.91-2.84-5.42 5.75z"/></svg>
         Napisz na Messengerze
       </a>
-      <a href="mailto:kontakt@leadico.pl" class="btn-email">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-        Napisz maila
+      <a href="mailto:kontakt@leadico.pl" class="btn-secondary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        kontakt@leadico.pl
       </a>
     </div>
-    <p class="contact-email-display reveal reveal-delay-3">
-      lub bezpośrednio: <a href="mailto:kontakt@leadico.pl">kontakt@leadico.pl</a>
-    </p>
-  </section>
- 
-  <!-- FOOTER -->
-  <footer>
-    <a href="#" class="footer-logo">LEADI<span>CO</span></a>
-    <p>© 2025 Leadico · Chatbot dla studiów auto detailingu w Polsce</p>
-    <p style="font-size:0.72rem; color: var(--muted);">leadico.pl</p>
-  </footer>
- 
-  <script>
-    // Nav shrink on scroll
-    const nav = document.getElementById('main-nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    });
- 
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
- 
-    reveals.forEach(el => observer.observe(el));
- 
-    // Smooth anchor scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-  </script>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer>
+  <div class="container">
+    <p>&copy; 2026 Leadico. Chatbot dla detailingu.</p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+<script>
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+reveals.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
