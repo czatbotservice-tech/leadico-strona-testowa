@@ -1,330 +1,1007 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leadico | Zautomatyzuj swoje Studio Detailingu</title>
-    <style>
-        :root {
-            --bg-dark: #0a0a0a;
-            --bg-card: #141414;
-            --accent: #ff5500; /* Sportowy, energetyczny pomarańcz */
-            --accent-hover: #ff7328;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --font-main: 'Montserrat', sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: var(--font-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Import Fontu Google */
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap');
-
-        h1, h2, h3 { 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Przyciski */
-        .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: #fff;
-            padding: 16px 36px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        
-        .btn:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 85, 0, 0.4);
-        }
-
-        /* Nawigacja */
-        nav {
-            padding: 25px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222;
-        }
-        
-        .logo { 
-            font-size: 2rem; 
-            font-weight: 900; 
-            color: #fff; 
-            letter-spacing: 2px;
-        }
-        
-        .logo span { color: var(--accent); }
-
-        /* Sekcja Hero */
-        .hero {
-            padding: 120px 0 100px;
-            text-align: center;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
-        }
-        
-        .hero h1 { 
-            font-size: 3.8rem; 
-            margin-bottom: 25px; 
-            color: #fff; 
-            line-height: 1.1;
-        }
-        
-        .hero p { 
-            font-size: 1.25rem; 
-            color: var(--text-muted); 
-            max-width: 650px; 
-            margin: 0 auto 40px; 
-            font-weight: 400;
-        }
-
-        /* Ogólne dla sekcji */
-        section { padding: 90px 0; }
-        .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 60px; color: #fff; }
-        .section-title span { color: var(--accent); }
-
-        /* Problem i Rozwiązanie */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: stretch;
-        }
-        
-        .card {
-            background-color: var(--bg-card);
-            padding: 45px;
-            border-radius: 6px;
-            border-left: 5px solid var(--accent);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        
-        .card h3 { font-size: 1.6rem; margin-bottom: 20px; color: #fff;}
-        .card p { color: var(--text-muted); font-size: 1.15rem;}
-
-        /* Jak to działa */
-        .steps { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 30px; 
-        }
-        
-        .step {
-            background-color: var(--bg-card);
-            padding: 40px 30px;
-            text-align: center;
-            border-radius: 6px;
-            border: 1px solid #222;
-            transition: transform 0.3s;
-        }
-        
-        .step:hover { transform: translateY(-5px); border-color: #333; }
-        
-        .step-number {
-            background-color: var(--accent);
-            color: #fff;
-            width: 50px; height: 50px;
-            display: flex; justify-content: center; align-items: center;
-            border-radius: 50%;
-            font-weight: 900;
-            margin: 0 auto 25px;
-            font-size: 1.4rem;
-        }
-        
-        .step h3 { margin-bottom: 15px; font-size: 1.3rem;}
-        .step p { color: var(--text-muted); font-size: 1rem;}
-
-        /* Cena */
-        .pricing-box {
-            background-color: var(--bg-card);
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 50px;
-            text-align: center;
-            border-radius: 8px;
-            border: 1px solid #333;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-        
-        .price { font-size: 4.5rem; font-weight: 900; color: #fff; margin: 15px 0; }
-        .price span { font-size: 1.5rem; color: var(--text-muted); font-weight: 600; text-transform: lowercase;}
-        .free-trial { color: var(--accent); font-weight: 800; font-size: 1.2rem; margin-bottom: 35px; display: block; }
-        
-        .features-list {
-            list-style: none; 
-            color: var(--text-muted); 
-            margin-bottom: 40px; 
-            text-align: left; 
-            display: inline-block;
-            font-size: 1.1rem;
-        }
-        
-        .features-list li { margin-bottom: 12px; }
-        .features-list li b { color: #fff; }
-
-        /* CTA & Footer */
-        footer {
-            background-color: #050505;
-            padding: 80px 0;
-            text-align: center;
-            border-top: 1px solid #222;
-        }
-        
-        footer h2 { margin-bottom: 25px; font-size: 2.5rem;}
-        
-        .contact-links { 
-            margin-top: 40px; 
-            display: flex; 
-            justify-content: center; 
-            gap: 25px;
-            align-items: center;
-        }
-        
-        .contact-links a { 
-            color: var(--text-muted); 
-            text-decoration: none; 
-            font-weight: 600; 
-            transition: color 0.3s; 
-        }
-        
-        .contact-links a:hover { color: var(--accent); }
-
-        /* Responsywność */
-        @media(max-width: 900px) {
-            .grid-2, .steps { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.8rem; }
-            .section-title { font-size: 2.2rem; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leadico — Chatbot dla studiów detailingu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --bg:       #080808;
+      --surface:  #111111;
+      --surface2: #181818;
+      --border:   rgba(255,255,255,0.07);
+      --orange:   #FF6200;
+      --orange2:  #FF8C38;
+      --white:    #F0EDE8;
+      --muted:    #666;
+      --muted2:   #999;
+      --font-h:   'Bebas Neue', sans-serif;
+      --font-b:   'Syne', sans-serif;
+      --font-r:   'DM Sans', sans-serif;
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-r);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+ 
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+ 
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.3s;
+    }
+    nav.scrolled { padding: 14px 60px; }
+ 
+    .nav-logo {
+      font-family: var(--font-h);
+      font-size: 1.9rem;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--orange); }
+ 
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--orange);
+      color: #000;
+      font-family: var(--font-b);
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--orange2); transform: translateY(-1px); }
+ 
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    /* diagonal grid lines */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(135deg, rgba(255,98,0,0.03) 1px, transparent 1px),
+        linear-gradient(45deg, rgba(255,98,0,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+ 
+    /* big orange glow */
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,98,0,0.12) 0%, transparent 70%);
+      top: -100px; right: -150px;
+      pointer-events: none;
+    }
+ 
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--font-b);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid rgba(255,98,0,0.4);
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 28px;
+      width: fit-content;
+    }
+ 
+    .hero-h1 {
+      font-family: var(--font-h);
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      max-width: 900px;
+      margin-bottom: 28px;
+    }
+    .hero-h1 .accent { color: var(--orange); }
+    .hero-h1 .thin {
+      font-family: var(--font-b);
+      font-size: clamp(1.2rem, 2.5vw, 2rem);
+      font-weight: 300;
+      display: block;
+      letter-spacing: 0.08em;
+      color: var(--muted2);
+      text-transform: none;
+      margin-bottom: 6px;
+    }
+ 
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--muted2);
+      max-width: 560px;
+      margin-bottom: 44px;
+      line-height: 1.8;
+    }
+ 
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+ 
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--orange);
+      color: #000;
+      font-family: var(--font-b);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--orange2);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(255,98,0,0.3);
+    }
+ 
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted2);
+      font-family: var(--font-b);
+      font-weight: 600;
+      font-size: 0.88rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--white); border-color: var(--white); }
+ 
+    .hero-stat-row {
+      display: flex;
+      gap: 48px;
+      margin-top: 72px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .hero-stat strong {
+      display: block;
+      font-family: var(--font-h);
+      font-size: 2.6rem;
+      color: var(--orange);
+      line-height: 1;
+    }
+    .hero-stat span {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-family: var(--font-b);
+      font-weight: 600;
+    }
+ 
+    /* ── SECTIONS COMMON ── */
+    section { padding: 110px 60px; }
+    section + section { border-top: 1px solid var(--border); }
+ 
+    .section-tag {
+      font-family: var(--font-b);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+ 
+    .section-h2 {
+      font-family: var(--font-h);
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      max-width: 700px;
+    }
+ 
+    .section-lead {
+      font-size: 1.05rem;
+      color: var(--muted2);
+      max-width: 560px;
+      line-height: 1.85;
+    }
+ 
+    /* ── PROBLEM ── */
+    #problem { background: var(--surface); }
+ 
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-top: 64px;
+    }
+ 
+    .problem-cards { display: flex; flex-direction: column; gap: 16px; }
+ 
+    .pcard {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid rgba(255,98,0,0.5);
+      padding: 24px 28px;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .pcard:hover { border-left-color: var(--orange); transform: translateX(4px); }
+    .pcard-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .pcard h4 {
+      font-family: var(--font-b);
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .pcard p { font-size: 0.88rem; color: var(--muted2); line-height: 1.7; }
+ 
+    /* messenger mockup */
+    .messenger-mock {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+    }
+    .mock-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .mock-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #333, #222);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .mock-name { font-family: var(--font-b); font-size: 0.9rem; font-weight: 700; }
+    .mock-status { font-size: 0.72rem; color: #ef4444; display: flex; align-items: center; gap: 4px; }
+    .mock-status::before { content: '●'; }
+ 
+    .mock-bubble {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+    .mock-bubble.incoming {
+      background: #1e3a5f;
+      border-bottom-left-radius: 4px;
+      margin-right: auto;
+    }
+    .mock-bubble.outgoing {
+      background: var(--surface2);
+      border-bottom-right-radius: 4px;
+      margin-left: auto;
+      color: var(--muted2);
+    }
+    .mock-time {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: center;
+      margin: 8px 0;
+    }
+    .mock-seen {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: right;
+      margin-top: 4px;
+    }
+    .mock-badge {
+      display: inline-block;
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #ef4444;
+      font-size: 0.72rem;
+      font-family: var(--font-b);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-top: 16px;
+      width: 100%;
+      text-align: center;
+    }
+ 
+    /* ── SOLUTION ── */
+    #solution { position: relative; overflow: hidden; }
+    #solution::after {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,98,0,0.07) 0%, transparent 70%);
+      bottom: -200px; right: -100px;
+      pointer-events: none;
+    }
+ 
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+ 
+    .scard {
+      background: var(--surface);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .scard:hover { background: var(--surface2); }
+    .scard::before {
+      content: attr(data-num);
+      position: absolute;
+      top: -10px; right: 16px;
+      font-family: var(--font-h);
+      font-size: 6rem;
+      color: rgba(255,98,0,0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+ 
+    .scard-icon {
+      width: 48px; height: 48px;
+      border-radius: 8px;
+      background: rgba(255,98,0,0.1);
+      border: 1px solid rgba(255,98,0,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+    .scard h3 {
+      font-family: var(--font-b);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: 0.01em;
+    }
+    .scard p { font-size: 0.88rem; color: var(--muted2); line-height: 1.75; }
+ 
+    /* ── HOW IT WORKS ── */
+    #how { background: var(--surface); }
+ 
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 64px;
+      position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 36px; left: calc(33.33% / 2);
+      width: calc(100% - 33.33%);
+      height: 1px;
+      background: linear-gradient(90deg, var(--orange), rgba(255,98,0,0.2));
+      z-index: 0;
+    }
+ 
+    .step {
+      text-align: center;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+ 
+    .step-num {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h);
+      font-size: 1.8rem;
+      color: var(--orange);
+      margin: 0 auto 28px;
+      position: relative;
+    }
+    .step-num::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,98,0,0.2);
+    }
+ 
+    .step-emoji { font-size: 1.8rem; display: block; margin-bottom: 12px; }
+ 
+    .step h3 {
+      font-family: var(--font-b);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+    .step p { font-size: 0.88rem; color: var(--muted2); line-height: 1.75; }
+ 
+    /* ── PRICING ── */
+    #pricing { text-align: center; position: relative; overflow: hidden; }
+    #pricing::before {
+      content: 'LEADICO';
+      position: absolute;
+      font-family: var(--font-h);
+      font-size: 18vw;
+      color: rgba(255,255,255,0.015);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+ 
+    .price-card {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 60px 72px;
+      position: relative;
+      margin-top: 56px;
+      overflow: hidden;
+      max-width: 520px;
+      width: 100%;
+    }
+    .price-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--orange2));
+    }
+ 
+    .price-badge {
+      display: inline-block;
+      background: rgba(255,98,0,0.15);
+      border: 1px solid rgba(255,98,0,0.3);
+      color: var(--orange2);
+      font-family: var(--font-b);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 2px;
+      margin-bottom: 28px;
+    }
+ 
+    .price-amount {
+      font-family: var(--font-h);
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .price-amount sub {
+      font-size: 1.8rem;
+      vertical-align: bottom;
+      color: var(--muted2);
+    }
+    .price-amount sup {
+      font-size: 2rem;
+      color: var(--muted2);
+    }
+ 
+    .price-period {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 36px;
+      font-family: var(--font-b);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+ 
+    .price-features { list-style: none; margin-bottom: 40px; text-align: left; }
+    .price-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.92rem;
+      color: var(--muted2);
+    }
+    .price-features li:last-child { border-bottom: none; }
+    .price-features li::before {
+      content: '✓';
+      color: var(--orange);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+ 
+    .price-trial {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 20px;
+      font-family: var(--font-b);
+      letter-spacing: 0.04em;
+    }
+    .price-trial strong { color: var(--orange2); }
+ 
+    /* ── CTA SECTION ── */
+    #contact {
+      background: var(--surface);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #contact::before {
+      content: '';
+      position: absolute;
+      width: 800px; height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,98,0,0.08) 0%, transparent 65%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+ 
+    .contact-h2 {
+      font-family: var(--font-h);
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .contact-h2 .accent { color: var(--orange); }
+ 
+    .contact-sub {
+      font-size: 1.05rem;
+      color: var(--muted2);
+      margin-bottom: 48px;
+      max-width: 480px;
+      margin-left: auto; margin-right: auto;
+    }
+ 
+    .contact-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+ 
+    .btn-messenger {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #0084ff;
+      color: #fff;
+      font-family: var(--font-b);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-messenger:hover { opacity: 0.85; transform: translateY(-2px); }
+ 
+    .btn-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+      font-family: var(--font-b);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-email:hover { border-color: var(--white); transform: translateY(-2px); }
+ 
+    .contact-email-display {
+      font-family: var(--font-b);
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .contact-email-display a { color: var(--muted2); text-decoration: none; }
+    .contact-email-display a:hover { color: var(--white); }
+ 
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 60px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-logo {
+      font-family: var(--font-h);
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .footer-logo span { color: var(--orange); }
+    footer p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+ 
+    /* ── ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+ 
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 18px 28px; }
+      #hero { padding: 120px 28px 60px; }
+      section { padding: 72px 28px; }
+      footer { padding: 28px; }
+ 
+      .problem-grid { grid-template-columns: 1fr; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .step { padding: 24px 0; border-bottom: 1px solid var(--border); }
+      .step:last-child { border-bottom: none; }
+      .price-card { padding: 40px 28px; }
+      .hero-stat-row { gap: 28px; }
+    }
+ 
+    @media (max-width: 600px) {
+      .hero-h1 { font-size: 3rem; }
+      .price-amount { font-size: 3.8rem; }
+    }
+  </style>
 </head>
 <body>
-
-<div class="container">
-    <nav>
-        <div class="logo">LEAD<span>ICO</span></div>
-        <a href="#kontakt" class="btn" style="padding: 12px 24px; font-size: 0.9rem;">Napisz do nas</a>
-    </nav>
-</div>
-
-<section class="hero">
-    <div class="container">
-        <h1>Nie trać klientów,<br>gdy zamykasz studio.</h1>
-        <p>Chatbot na Messengera stworzony specjalnie dla auto detailingu. Odbiera wiadomości 24/7, zbiera dane i wysyła Ci SMS z gotowym leadem.</p>
-        <a href="#kontakt" class="btn">Napisz do nas</a>
+ 
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">LEADI<span>CO</span></a>
+    <a href="#contact" class="nav-cta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.18 21.5l4.438-1.219A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+      Napisz do nas
+    </a>
+  </nav>
+ 
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-tag reveal">🚗 Chatbot dla auto detailingu</div>
+    <h1 class="hero-h1 reveal reveal-delay-1">
+      <span class="thin">Nie trać leadów</span>
+      Gdy śpisz,<br /><span class="accent">Bot pracuje.</span>
+    </h1>
+    <p class="hero-desc reveal reveal-delay-2">
+      Leadico automatycznie obsługuje klientów na Messengerze 24/7 — 
+      odpowiada na pytania, prowadzi rozmowę 
+      i wysyła Ci SMS, gdy ktoś jest zainteresowany Twoją usługą.
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="#contact" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.18 21.5l4.438-1.219A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        Zacznij za darmo
+      </a>
+      <a href="#how" class="btn-ghost">
+        Jak to działa
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
-</section>
-
-<section id="opis">
-    <div class="container grid-2">
-        <div class="card" style="border-left-color: #dc2626;">
-            <h3>❌ Problem: Uciekające leady</h3>
-            <p>Klienci najczęściej przeglądają social media i podejmują decyzje zakupowe wieczorami. Ty odpoczywasz po ciężkim dniu przy polerce, a wiadomości zostają bez odpowiedzi. Rano dowiadujesz się, że klient pojechał już do konkurencji.</p>
-        </div>
-        <div class="card" style="border-left-color: #16a34a;">
-            <h3>✅ Rozwiązanie: Asystent 24/7</h3>
-            <p>Leadico przejmuje Twojego Messengera. Bot błyskawicznie odpowiada na pytania, zbiera niezbędne dane od klienta i bezbłędnie układa nowe rezerwacje wprost do Twojego arkusza w Google Sheets. Ty otrzymujesz tylko SMS z potwierdzeniem.</p>
-        </div>
+    <div class="hero-stat-row reveal reveal-delay-4">
+      <div class="hero-stat">
+        <strong>24/7</strong>
+        <span>Dostępność bota</span>
+      </div>
+      <div class="hero-stat">
+        <strong>~2 min</strong>
+        <span>Czas odpowiedzi</span>
+      </div>
+      <div class="hero-stat">
+        <strong>250 zł</strong>
+        <span>Miesięcznie</span>
+      </div>
+      <div class="hero-stat">
+        <strong>0 zł</strong>
+        <span>Pierwsze 2 tygodnie</span>
+      </div>
     </div>
-</section>
-
-<section id="jak-to-dziala" style="background-color: #0f0f0f;">
-    <div class="container">
-        <h2 class="section-title">Jak to <span>działa?</span></h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <h3>Klient pisze</h3>
-                <p>Klient wchodzi na Twój fanpage i pyta o cenę ceramiki, pranie wnętrza lub pierwszy wolny termin.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <h3>Bot zbiera dane</h3>
-                <p>Leadico automatycznie pyta o imię, telefon, markę auta oraz pakiet usług, natychmiast wrzucając kompletne dane do arkusza kalkulacyjnego.</p>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <h3>Dostajesz SMS</h3>
-                <p>Bot wysyła wiadomość SMS bezpośrednio na Twój telefon. Masz gotowy kontakt do zdecydowanego klienta.</p>
-            </div>
+  </section>
+ 
+  <!-- PROBLEM -->
+  <section id="problem">
+    <p class="section-tag reveal">Problem</p>
+    <h2 class="section-h2 reveal reveal-delay-1">Leady giną po godzinach pracy</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      Klienci pytają o wolne terminy o 22:00. 
+      Ty śpisz. Rano widzisz wiadomość — 
+      ale tamten już umówił się u konkurencji.
+    </p>
+ 
+    <div class="problem-grid">
+      <div class="problem-cards reveal reveal-delay-1">
+        <div class="pcard">
+          <div class="pcard-icon">🌙</div>
+          <h4>Zapytania po godzinach</h4>
+          <p>Większość klientów pisze wieczorami i w weekendy — dokładnie wtedy, kiedy studio jest zamknięte.</p>
         </div>
-    </div>
-</section>
-
-<section id="cena">
-    <div class="container">
-        <h2 class="section-title">Prosty <span>cennik</span></h2>
-        <div class="pricing-box">
-            <h3 style="color: var(--text-muted); font-size: 1.2rem;">Pełna automatyzacja studia</h3>
-            <div class="price">250 zł<span>/m-c</span></div>
-            <span class="free-trial">Testuj przez 14 dni za darmo!</span>
-            
-            <ul class="features-list">
-                <li>✓ Integracja <b>Messenger + Botpress</b></li>
-                <li>✓ Powiadomienia <b>SMS (Twilio)</b></li>
-                <li>✓ Rezerwacje zapisywane w <b>Google Sheets</b></li>
-                <li>✓ Stała obsługa klientów <b>24/7</b></li>
-                <li>✓ Wsparcie techniczne w cenie</li>
-            </ul>
-            <br>
-            <a href="#kontakt" class="btn" style="width: 100%; font-size: 1rem;">Rozpocznij darmowy test</a>
+        <div class="pcard">
+          <div class="pcard-icon">⚡</div>
+          <h4>Klient nie czeka</h4>
+          <p>Jeśli nie dostanie odpowiedzi w ciągu kilku minut, pisze do kolejnego studia. I tam zostaje.</p>
         </div>
-    </div>
-</section>
-
-<footer id="kontakt">
-    <div class="container">
-        <h2>Gotowy na więcej klientów?</h2>
-        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 40px; font-size: 1.1rem;">
-            Zbudujmy bota skrojonego pod Twoje studio auto detailingu. Skontaktuj się z nami i odbierz 2 tygodnie testów bez zobowiązań.
-        </p>
-        <a href="mailto:kontakt@leadico.pl" class="btn">Wyślij wiadomość</a>
-        
-        <div class="contact-links">
-            <a href="#">Messenger</a>
-            <span style="color: #333;">|</span>
-            <a href="mailto:kontakt@leadico.pl">kontakt@leadico.pl</a>
+        <div class="pcard">
+          <div class="pcard-icon">📋</div>
+          <h4>Brak danych klienta</h4>
+          <p>Nawet jeśli odpisujesz, musisz ręcznie zbierać markę auta, zakres usługi, termin. To pochłania czas.</p>
         </div>
+        <div class="pcard">
+          <div class="pcard-icon">😮‍💨</div>
+          <h4>Ciągłe przerywanie</h4>
+          <p>Każde pytanie na Messengerze to przerwa w pracy. Detalerzy sami obsługują klientów — to się nie skaluje.</p>
+        </div>
+      </div>
+ 
+      <div class="messenger-mock reveal reveal-delay-2">
+        <div class="mock-header">
+          <div class="mock-avatar">🚗</div>
+          <div>
+            <div class="mock-name">Studio Detailing Pro</div>
+            <div class="mock-status">Brak odpowiedzi</div>
+          </div>
+        </div>
+        <div class="mock-time">Wczoraj, 21:47</div>
+        <div class="mock-bubble incoming">Hej, macie może termin na korektę lakieru BMW F30? Chciałbym umówić się na przyszły tydzień 🙏</div>
+        <div class="mock-bubble incoming">Interesuje mnie pakiet średni, auto jest w miarę dobrym stanie</div>
+        <div class="mock-time">Dziś, 09:12</div>
+        <div class="mock-bubble outgoing">Hej! Przepraszam za opóźnienie...</div>
+        <div class="mock-seen">✓✓ Dostarczono · Nie przeczytano</div>
+        <div class="mock-badge">❌ Klient już wybrał konkurencję</div>
+      </div>
     </div>
-</footer>
-
-<script>
-    // Płynne przewijanie do sekcji (Smooth Scroll)
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if(target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
+  </section>
+ 
+  <!-- SOLUTION -->
+  <section id="solution">
+    <p class="section-tag reveal">Rozwiązanie</p>
+    <h2 class="section-h2 reveal reveal-delay-1">Bot odpowiada.<br />Ty dostajesz SMS.</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      Leadico przejmuje Twojego Messengera. 
+      Klient dostaje natychmiastową odpowiedź — 
+      a Ty dostajesz gotowy lead na telefon.
+    </p>
+ 
+    <div class="solution-grid">
+      <div class="scard reveal reveal-delay-1" data-num="01">
+        <div class="scard-icon">🤖</div>
+        <h3>Odpowiedź w sekundy</h3>
+        <p>Bot wita klienta, odpowiada na pytania o cennik i dostępność — niezależnie od pory dnia i nocy.</p>
+      </div>
+      <div class="scard reveal reveal-delay-2" data-num="02">
+        <div class="scard-icon">📊</div>
+        <h3>Prowadzi naturalną rozmowę</h3>
+        <p>Pyta o imię, numer kontaktowy, markę auta i zakres usługi — klient po prostu odpisuje, jak w zwykłej rozmowie. Wszystko trafia do Google Sheets.</p>
+      </div>
+      <div class="scard reveal reveal-delay-3" data-num="03">
+        <div class="scard-icon">📱</div>
+        <h3>SMS do Ciebie</h3>
+        <p>Gdy klient jest gotowy na rezerwację, dostajesz SMS z jego danymi. Dzwonisz i zamykasz temat.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <p class="section-tag reveal">Jak to działa</p>
+    <h2 class="section-h2 reveal reveal-delay-1">Trzy proste kroki</h2>
+    <p class="section-lead reveal reveal-delay-2">
+      Zero technicznych ustawień z Twojej strony. 
+      Konfigurujemy wszystko i przekazujemy gotowy bot.
+    </p>
+ 
+    <div class="steps">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">1</div>
+        <span class="step-emoji">💬</span>
+        <h3>Klient pisze na Messengerze</h3>
+        <p>Klient trafia na Twój fanpage i zaczyna rozmowę. Bot odbiera wiadomość natychmiast — o każdej porze.</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">2</div>
+        <span class="step-emoji">🧩</span>
+        <h3>Bot zbiera dane</h3>
+        <p>Rozmawia z klientem naturalnie — pyta o imię, markę auta, zakres usługi i preferowany termin. Klient po prostu odpisuje.</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">3</div>
+        <span class="step-emoji">🔔</span>
+        <h3>Ty dostajesz SMS</h3>
+        <p>Gdy klient jest zainteresowany, dostajesz SMSa z jego danymi. Oddzwaniasz kiedy Ci pasuje — i rozmawiasz już z kimś konkretnym.</p>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- PRICING -->
+  <section id="pricing">
+    <p class="section-tag reveal">Cennik</p>
+    <h2 class="section-h2 reveal reveal-delay-1" style="margin: 0 auto 8px;">Jeden plan.<br />Bez niespodzianek.</h2>
+    <p class="section-lead reveal reveal-delay-2" style="margin: 0 auto;">
+      Żadnych ukrytych opłat, żadnych limitów leadów.
+    </p>
+ 
+    <div class="price-card reveal reveal-delay-2">
+      <div class="price-badge">⭐ Pełna obsługa</div>
+      <div class="price-amount">
+        <sup>od</sup> 250 <sub>zł</sub>
+      </div>
+      <p class="price-period">/ miesiąc · pełna obsługa</p>
+ 
+      <ul class="price-features">
+        <li>Bot na Messengerze Twojego studia</li>
+        <li>Zbieranie danych klienta automatycznie</li>
+        <li>SMS do właściciela przy każdym zgłoszeniu</li>
+        <li>Zapis leadów w Google Sheets</li>
+        <li>Konfiguracja pod Twoje usługi i cennik</li>
+        <li>Wsparcie techniczne i aktualizacje</li>
+      </ul>
+ 
+      <a href="#contact" class="btn-primary" style="width:100%; justify-content:center;">
+        Zacznij bezpłatne 2 tygodnie
+      </a>
+      <p class="price-trial">Pierwsze <strong>2 tygodnie bezpłatnie</strong> — bez karty, bez zobowiązań.</p>
+    </div>
+  </section>
+ 
+  <!-- CTA / CONTACT -->
+  <section id="contact">
+    <h2 class="contact-h2 reveal">
+      Gotowy żeby przestać<br />
+      <span class="accent">tracić klientów?</span>
+    </h2>
+    <p class="contact-sub reveal reveal-delay-1">
+      Napisz do nas — porozmawiamy o Twoim studio i uruchomimy bota w ciągu kilku dni.
+    </p>
+    <div class="contact-buttons reveal reveal-delay-2">
+      <a href="https://m.me/leadico" class="btn-messenger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.18 21.5l4.438-1.219A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        Napisz na Messengerze
+      </a>
+      <a href="mailto:kontakt@leadico.pl" class="btn-email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+        Napisz maila
+      </a>
+    </div>
+    <p class="contact-email-display reveal reveal-delay-3">
+      lub bezpośrednio: <a href="mailto:kontakt@leadico.pl">kontakt@leadico.pl</a>
+    </p>
+  </section>
+ 
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-logo">LEADI<span>CO</span></a>
+    <p>© 2025 Leadico · Chatbot dla studiów auto detailingu w Polsce</p>
+    <p style="font-size:0.72rem; color: var(--muted);">leadico.pl</p>
+  </footer>
+ 
+  <script>
+    // Nav shrink on scroll
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
     });
-</script>
-
+ 
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+ 
+    reveals.forEach(el => observer.observe(el));
+ 
+    // Smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
