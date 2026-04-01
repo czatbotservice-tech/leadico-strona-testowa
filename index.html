@@ -385,6 +385,12 @@ section { padding: 100px 0; }
 }
 
 /* chat mockup */
+.chat-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .chat-mockup {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -463,6 +469,49 @@ section { padding: 100px 0; }
 @keyframes fadeInMsg {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* sms notification card */
+.sms-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 98, 0, 0.25);
+  border-radius: 12px;
+  padding: 20px 24px;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.sms-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--orange);
+}
+
+.sms-label {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+
+.sms-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.sms-line {
+  font-size: 0.82rem;
+  color: var(--gray-light);
+  line-height: 1.7;
 }
 
 /* ═══════════════════════ HOW IT WORKS ═══════════════════════ */
@@ -795,7 +844,7 @@ footer a { color: var(--orange); }
         <span class="accent">24/7</span>
       </h1>
       <p>
-        Chatbot, który prowadzi rozmowę z klientami na Messengerze — nawet o 2 w nocy.
+        Asystent, który prowadzi rozmowę z klientami na Messengerze — nawet o 2 w nocy.
         Gdy klient jest zainteresowany, dostajesz SMS ze zgłoszeniem.
       </p>
       <a href="#kontakt" class="hero-cta">
@@ -898,21 +947,30 @@ footer a { color: var(--orange); }
         </div>
       </div>
 
-      <div class="chat-mockup reveal">
-        <div class="chat-header">
-          <div class="chat-avatar">L</div>
-          <div>
-            <div class="chat-name">Studio Detailing Pro</div>
-            <div class="chat-status">● Online</div>
+      <div class="chat-column">
+        <div class="chat-mockup reveal">
+          <div class="chat-header">
+            <div class="chat-avatar">L</div>
+            <div>
+              <div class="chat-name">Twoje Studio Detailingu</div>
+              <div class="chat-status">● Online</div>
+            </div>
+          </div>
+          <div class="chat-messages">
+            <div class="msg msg-user">Cześć, mam dużo rys na samochodzie</div>
+            <div class="msg msg-bot">Witaj! Żeby dobrać najlepszy sposób usunięcia rys — jakie masz auto? (marka i model)</div>
+            <div class="msg msg-user">bmw g20 czarne</div>
+            <div class="msg msg-bot">BMW G20 to świetne auto! Na rysy najlepiej sprawdzi się pakiet Max — wieloetapowa korekta + powłoka ceramiczna. Efekt „jak nowe". Podaj imię i numer telefonu, a studio się z Tobą skontaktuje.</div>
+            <div class="msg msg-user">Marcin, 512 345 678</div>
+            <div class="msg msg-bot">Gotowe! Studio skontaktuje się z Tobą w sprawie pakietu Max dla BMW G20. Dzięki Marcin 🤙</div>
           </div>
         </div>
-        <div class="chat-messages">
-          <div class="msg msg-user">Cześć, ile kosztuje korekta lakieru na BMW F30?</div>
-          <div class="msg msg-bot">Hej! Chętnie pomogę 😊 Korekta jednofazowa to 800 zł, a wieloetapowa od 1200 zł. Zależy od stanu lakieru. Jak ma na imię osoba, z którą rozmawiam?</div>
-          <div class="msg msg-user">Marcin</div>
-          <div class="msg msg-bot">Cześć Marcin! A jaki numer telefonu podać, żeby właściciel studia mógł się z Tobą skontaktować?</div>
-          <div class="msg msg-user">512 345 678</div>
-          <div class="msg msg-bot">Gotowe! Przekazałem informacje — odezwą się do Ciebie najszybciej jak to możliwe. Dzięki Marcin 🤙</div>
+
+        <div class="sms-card reveal reveal-delay-2">
+          <div class="sms-label">📱 SMS do Ciebie:</div>
+          <div class="sms-title">NOWE ZGŁOSZENIE</div>
+          <div class="sms-line">Klient: Marcin &nbsp;|&nbsp; Tel: 512 345 678</div>
+          <div class="sms-line">Auto: BMW G20 czarne &nbsp;|&nbsp; Zainteresowanie: Pakiet Max</div>
         </div>
       </div>
     </div>
@@ -989,7 +1047,7 @@ footer a { color: var(--orange); }
       <p class="section-label">Kontakt</p>
       <h2 class="section-title">GOTOWY, ŻEBY NIE TRACIĆ<br>KLIENTÓW?</h2>
       <p class="section-desc">
-        Napisz do nas — ustawimy bota na Twojego Messengera.
+        Napisz do nas — podłączymy asystenta do Twojego Messengera.
         Pierwsze 2 tygodnie za darmo, bez zobowiązań.
       </p>
     </div>
